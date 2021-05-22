@@ -1,6 +1,6 @@
 let findParentDir = require('find-parent-dir');
 
-const repoName = 'bitcoin-token-smart-contracts'
+const repoName = 'bitcoin-token-smart-contracts/ethereum'
 const repoRootDir = findParentDir.sync(__dirname, repoName);
 
 /*

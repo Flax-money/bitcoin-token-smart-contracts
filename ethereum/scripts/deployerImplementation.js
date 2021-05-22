@@ -32,7 +32,7 @@ module.exports.deploy = async function (inputFile, gasPriceGwei, rpcUrl, dontSen
         "Factory.sol" : fs.readFileSync(factoryContractPath + 'Factory.sol', 'utf8'),
         "Members.sol" : fs.readFileSync(factoryContractPath + 'Members.sol', 'utf8'),
         "MembersInterface.sol" : fs.readFileSync(factoryContractPath + 'MembersInterface.sol', 'utf8'),
-        "WBTC.sol" : fs.readFileSync(tokenContractPath + 'WBTC.sol', 'utf8')
+        "WCHIA.sol" : fs.readFileSync(tokenContractPath + 'WCHIA.sol', 'utf8')
     };
 
     function findImports (_path) {
@@ -182,12 +182,14 @@ module.exports.deploy = async function (inputFile, gasPriceGwei, rpcUrl, dontSen
         /////////////////////////////////////////////////////////////
 
         let tokenAddress, tokenContract;
-        [tokenAddress, tokenContract] = await deployContract(output, "WBTC.sol:WBTC", []);
+        [tokenAddress, tokenContract] = await deployContract(output, "WCHIA.sol:WCHIA", []);
         console.log("tokenAddress: " + tokenAddress);
+        console.log("tokenContract: " + tokenContract);
 
         let controllerAddress, controllerContract;
         [controllerAddress, controllerContract] = await deployContract(output, "Controller.sol:Controller", [tokenAddress]);
         console.log("controllerAddress: " + controllerAddress)
+        console.log("controllerAddress: " + controllerContract)
 
         let membersAddress, membersContract;
         // set sender as owner here, can use controller in final deployment.
@@ -224,11 +226,11 @@ module.exports.deploy = async function (inputFile, gasPriceGwei, rpcUrl, dontSen
 
         ////////////////////////////////////////////////////////////
 
-        console.log("controllerContract.methods.transferOwnership: " + accountMultiSigAddress)
-        await sendTx(controllerContract.methods.transferOwnership(accountMultiSigAddress), account);
-
-        console.log("membersContract.methods.transferOwnership: " + accountMultiSigAddress)
-        await sendTx(membersContract.methods.transferOwnership(accountMultiSigAddress), account);
+        // console.log("controllerContract.methods.transferOwnership: " + accountMultiSigAddress)
+        // await sendTx(controllerContract.methods.transferOwnership(accountMultiSigAddress), account);
+        //
+        // console.log("membersContract.methods.transferOwnership: " + accountMultiSigAddress)
+        // await sendTx(membersContract.methods.transferOwnership(accountMultiSigAddress), account);
 
         ////////////////////////////////////////////////////////////
 
